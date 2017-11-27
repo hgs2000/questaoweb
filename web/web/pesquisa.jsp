@@ -14,36 +14,83 @@
     <body>
 
         <script>
-            $(document).ready(
-                    function () {
-                        $("#search").click(
-                                function () {
+            /*$(document).ready(
+             function () {
+             $("#search").click(
+             function () {
+             
+             var valor = $(this).val();
+             
+             $.get("Controlador?valor=" + valor, function (data, status) {
+             var resposta = data;
+             
+             var partes = data.split("|");
+             
+             //https://github.com/hvescovi/ifc/blob/master/pweb-2017-301/02-reengenharia-livros-301/web/principal.jsp
+             //continuar daqui
+             
+             resultadoBusca = "";
+             
+             for (i = 0; i < partes.lenght; i++) {
+             resultadoBusca += partes[i] + "<br />";
+             }
+             
+             $("#output").html(resultadoBusca);
+             if (resultadoBusca === "") {
+             $("#output").html("Nada");
+             }
+             });
+             
+             }
+             
+             );
+             }
+             );*/
 
-                                    var valor = $(this).val();
-                                    
-                $.get("Controlador?valor=" + valor, function (data, status){
-                    var resposta = data;
-                    
-                    var partes = data.split("|");
-                    
-                    //https://github.com/hvescovi/ifc/blob/master/pweb-2017-301/02-reengenharia-livros-301/web/principal.jsp
-                    //continuar daqui
+            /*$(document).on("click", "#somebutton", function () {  // When HTML DOM "click" event is invoked on element with ID "somebutton", execute the following function...
+             $.get("../Controlador?valor=" + $("#valor").val(), function (responseJson) {    // Execute Ajax GET request on URL of "someservlet" and execute the following function with Ajax response JSON...
+             var $ul = $("<ul>").appendTo($("#output")); // Create HTML <ul> element and append it to HTML DOM element with ID "somediv".
+             
+             $.each(responseJson, function (index, item) { // Iterate over the JSON array.
+             $("<li>").text(item).appendTo($ul);      // Create HTML <li> element, set its text content with currently iterated item and append it to the <ul>.
+             });
+             });
+             });*/
+
+            //alert($("#valor"));
+            $(document).on("click", "#search", function () {
+                $.ajax({
+                    type: "GET",
+                    url: "../Controlador",
+                    data: $("#form").serialize()
+                }).done(function (responseJson) {
+                    var $ul = $("<ul>").appendTo($("#output")); // Create HTML <ul> element and append it to HTML DOM element with ID "somediv".
+
+                    $.each(responseJson, function (index, item) { // Iterate over the JSON array.
+                        $("<li>").text(item).appendTo($ul);      // Create HTML <li> element, set its text content with currently iterated item and append it to the <ul>.
+                    });
                 });
+                
+                return false;
+            });
 
-                                }
-                        );
-                    }
-            );
+
+
+
+
         </script>
 
 
-        <form method="post">
+        <form id="form">
             <label for="valor">Valor a ser pesquisado: </label>
-            <input type="text" name="valor">
+            <input type="text" name="valor" id="valor">
+
             <input type="submit" value="Pesquisar" id="search">
         </form>
-        
-        
+
+        <p id="output">
+
+        </p>
 
     </body>
 </html>
